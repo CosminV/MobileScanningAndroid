@@ -86,7 +86,7 @@ public class IDActivity extends Activity implements AppCompatCallback {
 
     private Recognizer recognizer = null;
     private RecognitionSettings recognitionSettings;
-    private static final String licenseKey = "YED5UR2C-57ER3PZU-NM3DRECK-DFGLS3JS-L4CXOMEC-YWA7C365-YYN7DT2H-N6Q52TK7";
+    private static final String licenseKey = "XTZS7H5L-MTFNZ5BA-7DAHYA3U-2OA7C365-YYN7C365-YYN7C365-YYN7DT2H-N6Q52366";
 
     ProgressDialog pd;
 

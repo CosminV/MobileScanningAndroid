@@ -49,7 +49,7 @@ public class OCRTriggerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(OCRTriggerActivity.this, OCRActivity.class);
-                intent.putExtra(BaseScanActivity.EXTRAS_LICENSE_KEY, "YED5UR2C-57ER3PZU-NM3DRECK-DFGLS3JS-L4CXOMEC-YWA7C365-YYN7DT2H-N6Q52TK7");
+                intent.putExtra(BaseScanActivity.EXTRAS_LICENSE_KEY, "XTZS7H5L-MTFNZ5BA-7DAHYA3U-2OA7C365-YYN7C365-YYN7C365-YYN7DT2H-N6Q52366");
                 intent.putExtra(BaseScanActivity.EXTRAS_RECOGNITION_SETTINGS, recognitionSettings);
                 startActivityForResult(intent, MY_REQUEST_CODE);
             }
