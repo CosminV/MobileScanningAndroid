@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/tr1"
+            android:icon="@drawable/ic_create_new_folder_black_24dp"
+            android:title="New Contract" />
+        <item
+            android:id="@+id/tr2"
+            android:icon="@drawable/idicon"
+            android:title="New Client" />
+        <item
+            android:id="@+id/history"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="History" />
+    </group>
+
+    <item android:title="Informations">
+        <menu>
+            <item
+                android:id="@+id/contract"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Contact" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/abouticon"
+                android:title="About" />
+            <item
+                android:id="@+id/quit"
+                android:icon="@drawable/exiticon"
+                android:title="Quit" />
+        </menu>
+    </item>
+
+</menu>

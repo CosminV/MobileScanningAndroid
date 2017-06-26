@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.cosmin.kdocscanner">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/karrows"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme">
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".IDActivity"
+            android:parentActivityName=".MainDrawer" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".T1Activity"
+            android:parentActivityName=".MainDrawer" />
+        <activity
+            android:name=".DocumentActivity"
+            android:parentActivityName=".T1Activity" />
+        <activity
+            android:name=".LoginConfirmationActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".DocHistoryActivity"
+            android:parentActivityName=".MainDrawer" />
+        <activity android:name=".SignActivity" />
+        <activity
+            android:name=".MainDrawer"
+            android:label="Main Menu" />
+        //android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".ViewOnlyDocumentActivity"
+            android:parentActivityName=".DocHistoryActivity" />
+        <activity android:name=".OCRActivity" />
+        <activity android:name=".OCRTriggerActivity" />
+        <activity
+            android:name=".OCRResultActivity"
+            android:parentActivityName=".MainDrawer" />
+    </application>
+
+</manifest>

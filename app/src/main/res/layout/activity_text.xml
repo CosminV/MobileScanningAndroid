@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cosmin.kdocscanner.TextActivity">
+
+    <include layout="@layout/app_toolbar"
+        android:id="@+id/my_toolbar" />
+
+    <EditText
+        android:id="@+id/docName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp"
+        android:ems="10"
+        android:hint="docName"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/docName"
+        android:layout_below="@+id/docName"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="appName"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/generateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:text="Generate" />
+
+
+</RelativeLayout>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ocrresult"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cosmin.kdocscanner.OCRResultActivity">
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="OCR Results Preview"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold|italic" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/textView20"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView20"
+                    android:layout_below="@+id/textView20"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Name: " />
+
+                <TextView
+                    android:id="@+id/textView32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView31"
+                    android:layout_below="@+id/textView31"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Surname: " />
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView32"
+                    android:layout_below="@+id/textView32"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="ID: " />
+
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView33"
+                    android:layout_below="@+id/textView33"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Nationality: " />
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView34"
+                    android:layout_below="@+id/textView34"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Sex:" />
+
+                <TextView
+                    android:id="@+id/textView38"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView36"
+                    android:layout_below="@+id/textView36"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Birthday:" />
+
+                <TextView
+                    android:id="@+id/textView40"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView38"
+                    android:layout_below="@+id/textView38"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="ExpiryDate:" />
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView40"
+                    android:layout_below="@+id/textView40"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Issuing Date:" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView27"
+                    android:layout_below="@+id/textView27"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Issued By:" />
+
+                <TextView
+                    android:id="@+id/textView37"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView35"
+                    android:layout_below="@+id/textView35"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Address:" />
+
+                <TextView
+                    android:id="@+id/BirthPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/textView35"
+                    android:layout_below="@+id/textView37"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="BirthPlace:" />
+
+                <TextView
+                    android:id="@+id/CNP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/textView35"
+                    android:layout_below="@+id/textView37"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="CNP:" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView31"
+                    android:layout_alignBottom="@+id/textView31"
+                    android:layout_marginTop="18dp"
+                    android:layout_toEndOf="@+id/againBtn"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtSurname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView32"
+                    android:layout_alignStart="@+id/txtName"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/textView34"
+                    android:layout_alignStart="@+id/txtSurname"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtNationality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView34"
+                    android:layout_alignStart="@+id/txtID"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtNationality"
+                    android:layout_alignTop="@+id/textView36"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtSex"
+                    android:layout_alignTop="@+id/textView38"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtExpiryDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView40"
+                    android:layout_alignStart="@+id/txtBirthday"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtIssuingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtExpiryDate"
+                    android:layout_alignTop="@+id/textView27"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtIssuedBy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtIssuingDate"
+                    android:layout_alignTop="@+id/textView35"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtIssuedBy"
+                    android:layout_alignTop="@+id/textView37"
+                    android:layout_marginTop="10dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtBirthPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtAddress"
+                    android:layout_alignTop="@+id/BirthPlace"
+                    android:layout_marginTop="-2dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txtCNP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtAddress"
+                    android:layout_alignTop="@+id/BirthPlace"
+                    android:layout_marginTop="18dp"
+                    android:text="TextView" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/spinnerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/scrollView2"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/ip_prompt"
+            android:entries="@array/ip_arrays"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerLayout"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/againBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00000000"
+            app:srcCompat="@mipmap/retryscan" />
+
+        <ImageButton
+            android:id="@+id/newClientBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00000000"
+            app:srcCompat="@mipmap/newclient" />
+
+        <ImageButton
+            android:id="@+id/createBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00000000"
+            app:srcCompat="@mipmap/createclient" />
+    </LinearLayout>
+
+    <include layout="@layout/app_toolbar"
+        android:id="@+id/my_toolbar" />
+
+</RelativeLayout>

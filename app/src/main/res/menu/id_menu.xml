@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/rotateImage"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_dns_black_24dp"
+        android:title="Rotate Image by">
+
+        <menu>
+            <item android:id="@+id/halfRotateBtn" android:title="90 degrees">
+                <menu>
+                    <item android:id="@+id/halfRotateLeftBtn" android:title="Left"></item>
+                    <item android:id="@+id/halfRotateRightBtn" android:title="Right"></item>
+                </menu>
+            </item>
+            <item android:id="@+id/fullRotateBtn" android:title="180 degrees">
+                <menu>
+                    <item android:id="@+id/fullRotateLeftBtn" android:title="Left"></item>
+                </menu>
+            </item>
+
+            <item android:id="@+id/resetBtn" android:title="Default"></item>
+        </menu>
+
+    </item>
+
+    <item android:id="@+id/bugReport"
+        android:title="Bug Report" />
+
+    <item
+        android:id="@+id/contactUs"
+        app:showAsAction="never"
+        android:title="Contact Us">
+
+    </item>
+
+    <item
+        android:id="@+id/exit"
+        app:showAsAction="never"
+        android:title="Exit App">
+
+    </item>
+
+</menu>

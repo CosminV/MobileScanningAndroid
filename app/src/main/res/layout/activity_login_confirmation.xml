@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login_confirmation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cosmin.kdocscanner.LoginConfirmationActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/app_toolbar"
+            android:id="@+id/my_toolbar" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/kapschlogo"
+            android:id="@+id/imageView3"
+            android:layout_below="@+id/my_toolbar"
+            android:layout_alignParentEnd="true"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="WELCOME"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:id="@+id/textView7"
+            android:textSize="30sp"
+            android:textStyle="normal|bold"
+            android:layout_below="@+id/imageView3"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:text="You are now logged in as: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView7"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="65dp"
+            android:id="@+id/textView11"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:text="emailToFill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView11"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:id="@+id/textView12"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <Button
+            android:text="Continue >>"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView12"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="31dp"
+            android:id="@+id/continueBtn" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

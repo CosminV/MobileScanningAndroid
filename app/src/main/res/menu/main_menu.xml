@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/bugReport"
+        android:title="Bug Report" />
+
+    <item
+        android:id="@+id/contactUs"
+        app:showAsAction="never"
+        android:title="Contact Us">
+
+    </item>
+
+    <item
+        android:id="@+id/exit"
+        app:showAsAction="never"
+        android:title="Exit App">
+
+    </item>
+
+
+
+</menu>

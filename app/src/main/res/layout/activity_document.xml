@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_document"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cosmin.kdocscanner.DocumentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/my_toolbar"
+            layout="@layout/app_toolbar" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView8"
+            android:layout_below="@+id/textView8"
+            android:layout_marginTop="13dp"
+            android:text="ID:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView9"
+            android:layout_below="@+id/textView9"
+            android:layout_marginTop="13dp"
+            android:text="CNP:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        <TextView
+            android:id="@+id/cnpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/idTextView"
+            android:layout_alignTop="@+id/textView10"
+            android:text="cnpToFill"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView14"
+            android:layout_alignStart="@+id/textView48"
+            android:text="Date, " />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:text="dateToFill"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:layout_alignTop="@+id/signImageView"
+            android:layout_alignStart="@+id/textView16" />
+
+        <ImageView
+            android:id="@+id/signImageView"
+            android:layout_width="50dp"
+            android:layout_height="80dp"
+            android:layout_above="@+id/signButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toEndOf="@+id/signButton"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="100dp"
+            android:maxWidth="100dp"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/surnameTextView"
+            android:layout_alignTop="@+id/textView9"
+            android:text="idToFill"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/signImageView"
+            android:layout_alignStart="@+id/issuedbyTextView"
+            android:layout_marginBottom="10dp"
+            android:text="Signature, "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/nameTextView"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="23dp"
+            android:text="Surname:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView8"
+            android:layout_below="@+id/my_toolbar"
+            android:layout_marginTop="28dp"
+            android:text="Name"
+            android:textSize="20sp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/surnameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView8"
+            android:layout_alignStart="@+id/nationalityTextView"
+            android:text="surnameToFill"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <Button
+            android:id="@+id/doneBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/surnameTextView"
+            android:layout_below="@+id/signImageView"
+            android:minHeight="48dp"
+            android:text="Done"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Button
+            android:id="@+id/signButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/textView16"
+            android:layout_marginBottom="23dp"
+            android:text="Sign"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView10"
+            android:layout_below="@+id/cnpTextView"
+            android:layout_marginTop="11dp"
+            android:text="Nationality: " />
+
+        <TextView
+            android:id="@+id/nationalityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView13"
+            android:layout_alignBottom="@+id/textView13"
+            android:layout_alignEnd="@+id/signImageView"
+            android:layout_marginEnd="45dp"
+            android:text="nationalityToFill" />
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView13"
+            android:layout_below="@+id/textView13"
+            android:layout_marginTop="11dp"
+            android:text="Address:" />
+
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView42"
+            android:layout_alignBottom="@+id/textView42"
+            android:layout_alignStart="@+id/nationalityTextView"
+            android:layout_toEndOf="@+id/nationalityTextView"
+            android:maxLines="1"
+            android:text="addressToFill" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView42"
+            android:layout_below="@+id/textView42"
+            android:layout_marginTop="11dp"
+            android:text="Birth Date: " />
+
+        <TextView
+            android:id="@+id/birthdateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/addressTextView"
+            android:layout_alignTop="@+id/textView44"
+            android:layout_toEndOf="@+id/addressTextView"
+            android:text="birthDateToFill" />
+
+        <TextView
+            android:id="@+id/textView46"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView44"
+            android:layout_below="@+id/textView44"
+            android:layout_marginTop="11dp"
+            android:text="Issuing Date:" />
+
+        <TextView
+            android:id="@+id/issuingdateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView46"
+            android:layout_alignStart="@+id/textView14"
+            android:text="issuingdateToFill" />
+
+        <TextView
+            android:id="@+id/textView48"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView46"
+            android:layout_below="@+id/textView46"
+            android:layout_marginTop="11dp"
+            android:text="Issued By: " />
+
+        <TextView
+            android:id="@+id/issuedbyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView48"
+            android:layout_alignStart="@+id/birthdateTextView"
+            android:text="issuedbyToFill" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

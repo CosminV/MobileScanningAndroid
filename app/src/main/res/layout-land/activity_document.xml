@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_document"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cosmin.kdocscanner.DocumentActivity">
+
+    <include layout="@layout/app_toolbar"
+        android:id="@+id/my_toolbar" />
+
+    <TextView
+        android:text="DocID: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView8"
+        android:layout_alignStart="@+id/textView8"
+        android:layout_marginTop="36dp"
+        android:id="@+id/textView9"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+    <TextView
+        android:text="Address: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView9"
+        android:layout_alignStart="@+id/textView9"
+        android:layout_marginTop="36dp"
+        android:id="@+id/textView10"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+    <TextView
+        android:text="idToFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView9"
+        android:layout_alignStart="@+id/surnameTextView"
+        android:id="@+id/idTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+    <TextView
+        android:text="addressToFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView10"
+        android:layout_alignStart="@+id/idTextView"
+        android:id="@+id/cnpTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:id="@+id/surnameTextView"
+        android:layout_above="@+id/textView9"
+        android:layout_alignStart="@+id/signButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:text="SecretariatToFill" />
+
+    <TextView
+        android:text="DOCNAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:id="@+id/nameTextView"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signButton"
+        android:layout_marginBottom="37dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/nameTextView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/kdocscannerlogo"
+        android:id="@+id/signImageView"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:layout_marginBottom="28dp"
+        android:layout_above="@+id/signButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/cnpTextView" />
+
+    <TextView
+        android:text="Secretariat: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:id="@+id/textView8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:layout_below="@+id/nameTextView"
+        android:layout_toStartOf="@+id/nameTextView"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:text="Signature, "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textView14"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_below="@+id/cnpTextView"
+        android:layout_alignStart="@+id/signImageView" />
+
+</RelativeLayout>
