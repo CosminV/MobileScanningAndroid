@@ -224,8 +224,13 @@ public class DocumentActivity extends AppCompatActivity {
 
                     //4. Construire continut document
 
+                    //4.0 whitespaces
+
+                    StringBuilder stringBuilderDefault = new StringBuilder("\n\n\n\n\n");
+                    Paragraph p0 = new Paragraph(stringBuilderDefault.toString());
+
                     //4.1 Paragraf 1
-                    StringBuilder stringBuilderP1 = new StringBuilder("\n\n\n\n\nDomnule Presedinte");
+                    StringBuilder stringBuilderP1 = new StringBuilder("Domnule Presedinte");
                     stringBuilderP1.append("\n");
                     stringBuilderP1.append("\n");
 
@@ -300,6 +305,7 @@ public class DocumentActivity extends AppCompatActivity {
                     signature.scalePercent(10);
 
                     //5. Adagare continut la document si finalizarea acestuia
+                    document.add(p0);
                     document.add(p1);
                     document.add(new Paragraph("\n\n"));
                     document.add(p2);
