@@ -225,7 +225,7 @@ public class DocumentActivity extends AppCompatActivity {
                     //4. Construire continut document
 
                     //4.1 Paragraf 1
-                    StringBuilder stringBuilderP1 = new StringBuilder("Domnule Presedinte");
+                    StringBuilder stringBuilderP1 = new StringBuilder("\n\n\n\n\nDomnule Presedinte");
                     stringBuilderP1.append("\n");
                     stringBuilderP1.append("\n");
 
