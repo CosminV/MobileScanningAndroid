@@ -1,7 +1,9 @@
 package com.example.cosmin.kdocscanner;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.HttpResponseCache;
@@ -102,6 +104,19 @@ public class OCRResultActivity extends AppCompatActivity {
 
         if (extras != null) {
             results = intent.getParcelableExtra(BaseScanActivity.EXTRAS_RECOGNITION_RESULTS);
+        }
+
+        SharedPreferences sharedPreferences = getSharedPreferences("mobileScanningPrefs", Context.MODE_PRIVATE);
+        String typeFlag = sharedPreferences.getString("typeFlag", "n/a");
+        createButton = (ImageButton) findViewById(R.id.createBtn);
+        newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
+
+        if(typeFlag.equals("contract")){
+            createButton.setEnabled(true);
+            newClientButton.setEnabled(false);
+        }else if(typeFlag.equals("client")){
+            newClientButton.setEnabled(true);
+            createButton.setEnabled(false);
         }
         showResult(results);
         scanAgain();

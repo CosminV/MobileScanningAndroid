@@ -1,6 +1,8 @@
 package com.example.cosmin.kdocscanner;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -84,10 +86,18 @@ public class MainDrawer extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.tr1) {
-            Intent tr1Intent = new Intent(MainDrawer.this, T1Activity.class);
+            Intent tr1Intent = new Intent(MainDrawer.this, IDActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("mobileScanningPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("typeFlag", "contract");
+            editor.commit();
             startActivity(tr1Intent);
         } else if (id == R.id.tr2) {
             Intent tr2Intent = new Intent(MainDrawer.this, IDActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("mobileScanningPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("typeFlag", "client");
+            editor.commit();
             startActivity(tr2Intent);
         } else if (id == R.id.history) {
             Intent historyIntent = new Intent(MainDrawer.this, DocHistoryActivity.class);

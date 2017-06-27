@@ -347,7 +347,6 @@ public class DocumentActivity extends AppCompatActivity {
             }
         });
     }
-
     public void createTextDocumentFromTemplate(){
 
                 final String name = nameText.getText().toString();

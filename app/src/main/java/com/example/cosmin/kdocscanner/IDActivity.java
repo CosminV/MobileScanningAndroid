@@ -74,6 +74,7 @@ import java.util.Date;
 import Utils.ConvertUtils;
 
 import static android.R.attr.bitmap;
+import static android.R.attr.type;
 
 public class IDActivity extends Activity implements AppCompatCallback {
 
