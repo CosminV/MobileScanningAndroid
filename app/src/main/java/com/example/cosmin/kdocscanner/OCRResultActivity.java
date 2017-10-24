@@ -201,8 +201,6 @@ public class OCRResultActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                Spinner ipSpinner = (Spinner) findViewById(R.id.spinner2);
-                                String ip = ipSpinner.getSelectedItem().toString();
                                 URL url = new URL("http://" + ip + "/api/Person");
                                 final String name = nameTextView.getText().toString();
                                 final String surname = surnameTextView.getText().toString();
