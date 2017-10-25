@@ -112,7 +112,7 @@ public class IDActivity extends Activity implements AppCompatCallback {
         setupRomanianIDSettings();
         scanAction();
 
-        String bitmapStringFromResultActivity = getIntent().getStringExtra("BitmapStringFromResultActivity");
+        /*String bitmapStringFromResultActivity = getIntent().getStringExtra("BitmapStringFromResultActivity");
         boolean retryFlag = getIntent().getBooleanExtra("retryFlag", false);
 
         if(retryFlag == true){
@@ -120,7 +120,7 @@ public class IDActivity extends Activity implements AppCompatCallback {
             byte[] decodedByte = Base64.decode(bitmapStringFromResultActivity, 0);
             Bitmap retryBMP = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
             cameraImageView.setImageBitmap(retryBMP);
-        }
+        }*/
     }
 
     @Override
@@ -255,9 +255,9 @@ public class IDActivity extends Activity implements AppCompatCallback {
 
                                 Intent intent = new Intent(IDActivity.this, OCRResultActivity.class);
                                 intent.putExtra(BaseScanActivity.EXTRAS_RECOGNITION_RESULTS, recognitionResults);
-                                intent.putExtra("BitmapString", bitmapString);
+                                //intent.putExtra("BitmapString", bitmapString);
                                 startActivity(intent);
-                                finish();
+                                //finish();
 
                             }else{
                                 Toast.makeText(getApplicationContext(), "Nothing scanned!", Toast.LENGTH_SHORT).show();
