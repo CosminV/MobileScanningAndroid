@@ -282,9 +282,26 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/spinnerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/scrollView2"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/ip_prompt"
+            android:entries="@array/ip_arrays"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/scrollView2"
+        android:layout_below="@+id/spinnerLayout"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
