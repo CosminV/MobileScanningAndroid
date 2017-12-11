@@ -32,6 +32,7 @@ android {
 repositories {
     mavenCentral();
     maven { url 'http://maven.microblink.com' }
+    maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
 }
 
 dependencies {
@@ -52,5 +53,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'
     compile 'org.apache.poi:poi:3.16'
     compile 'com.itextpdf:itextg:5.5.10'
+    compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.1'
     testCompile 'junit:junit:4.12'
 }

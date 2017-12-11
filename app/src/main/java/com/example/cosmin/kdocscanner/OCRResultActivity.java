@@ -38,6 +38,7 @@ import com.microblink.recognizers.blinkid.romania.front.RomanianIDFrontSideRecog
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
