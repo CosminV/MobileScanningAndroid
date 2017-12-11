@@ -150,7 +150,7 @@ public class OCRResultActivity extends AppCompatActivity {
                     Date issuingDate = result.getValidFrom();
                     Date birthDate = result.getDateOfBirth();
                     Date expiryDate = result.getValidUntil();
-                    Log.d("OUTPUT RO ID ", name + surname + id + nationality + sex + address + issuedBy + birthPlace + issuingDate + birthDate + expiryDate);
+                    Log.d("OUTPUT RO ID: ", name + surname + id + nationality + sex + address + issuedBy + birthPlace + issuingDate + birthDate + expiryDate);
 
                     Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String birthDateString = formatter.format(birthDate);
