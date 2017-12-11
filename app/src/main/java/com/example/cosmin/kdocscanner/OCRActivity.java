@@ -98,7 +98,7 @@ public class OCRActivity extends Activity {
         }
 
         try {
-            recognizer.setLicenseKey(this, "EGWQ3OXN-Y77GTM4K-QHWDJEY6-3T2SB6G5-YYN7C365-YYN7C365-YYN7DT2H-N6Q53Z3T");
+            recognizer.setLicenseKey(this, "L35JCAC6-7PER3PZU-NM3DRECK-5FCXBDPC-ZEFMHRMB-6FX53RQ3-6FX52ZR2-HOZHMODM");
         } catch (InvalidLicenceKeyException e) {
             Toast.makeText(this, "Checking the license key failed! Reason: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             finish();
