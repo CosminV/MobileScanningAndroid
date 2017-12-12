@@ -38,7 +38,9 @@ import com.microblink.recognizers.blinkid.romania.front.RomanianIDFrontSideRecog
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -72,7 +74,7 @@ public class OCRResultActivity extends AppCompatActivity {
     String templateFileLocation = "/storage/emulated/0/documenteScan/docTemplate.txt";
     String ip = "192.168.175.44:83";
     String ip2 = "192.168.184.55:52600";
-    String ip3 = "";
+    String ipIdScanDemo = "192.168.175.200";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
