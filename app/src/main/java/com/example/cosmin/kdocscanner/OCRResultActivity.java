@@ -144,7 +144,7 @@ public class OCRResultActivity extends AppCompatActivity {
             newClientButton.setEnabled(false);
         }else if(typeFlag.equals("client")){
             newClientButton.setEnabled(true);
-            createButton.setEnabled(true);
+            createButton.setEnabled(false);
         }
         showResult(results);
         scanAgain();
