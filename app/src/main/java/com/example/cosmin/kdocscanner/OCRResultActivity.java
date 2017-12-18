@@ -132,7 +132,8 @@ public class OCRResultActivity extends AppCompatActivity {
         }
         showResult(results);
         scanAgain();
-        sendDataToDB();
+        //sendDataToDB();
+        sendDataToIS();
         createDocumentIndirect();
     }
 
