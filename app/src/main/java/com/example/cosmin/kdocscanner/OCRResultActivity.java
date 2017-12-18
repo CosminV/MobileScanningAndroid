@@ -144,12 +144,12 @@ public class OCRResultActivity extends AppCompatActivity {
             newClientButton.setEnabled(false);
         }else if(typeFlag.equals("client")){
             newClientButton.setEnabled(true);
-            createButton.setEnabled(false);
+            createButton.setEnabled(true);
         }
         showResult(results);
         scanAgain();
         sendDataToDB();
-        //sendDataToIS();
+        sendDataToIS();
         createDocumentIndirect();
     }
 
@@ -228,7 +228,9 @@ public class OCRResultActivity extends AppCompatActivity {
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            String URLIDScanDemo = "https://192.168.175.200/AgentService/IDScan.AgentService.ServiceAgent.svc";
+                            Spinner ipSpinner = (Spinner) findViewById(R.id.spinner2);
+                            String protocolIP = ipSpinner.getSelectedItem().toString();
+                            String URLIDScanDemo = protocolIP + "/AgentService/IDScan.AgentService.ServiceAgent.svc";
                             final String name = nameTextView.getText().toString();
                             final String surname = surnameTextView.getText().toString();
                             String id = idTextView.getText().toString();
@@ -318,8 +320,8 @@ public class OCRResultActivity extends AppCompatActivity {
 
             // metoda pentru transmiterea datelor unui client anterior OCR-izate catre baza de date.
             public void sendDataToDB() {
-                newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
-                newClientButton.setOnClickListener(new View.OnClickListener() {
+                createButton = (ImageButton) findViewById(R.id.createBtn);
+                createButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 

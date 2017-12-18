@@ -28,8 +28,13 @@
     <string name="ip_prompt">Choose an IP address</string>
 
     <string-array name="ip_arrays">
-        <item>192.168.175.44:83</item>
-        <item>192.168.184.55:52600</item>
-
+        <item>https://192.168.175.200</item>
+        <item>http://192.168.175.200</item>
+        <item>https://192.168.175.43</item>
+        <item>http://192.168.175.43</item>
+        <item>https://idscandemo.bcr.dev</item>
+        <item>http://idscandemo.bcr.dev</item>
+        <item>https://bcrdev.bcr.dev</item>
+        <item>http://bcrdev.bcr.dev</item>
     </string-array>
 </resources>
