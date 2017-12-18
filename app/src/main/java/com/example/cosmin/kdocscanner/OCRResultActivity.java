@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
@@ -50,9 +51,22 @@ import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
 
 import Utils.ConvertUtils;
 import Utils.ProgressDialogManager;
@@ -134,8 +148,8 @@ public class OCRResultActivity extends AppCompatActivity {
         }
         showResult(results);
         scanAgain();
-        //sendDataToDB();
-        sendDataToIS();
+        sendDataToDB();
+        //sendDataToIS();
         createDocumentIndirect();
     }
 
@@ -279,6 +293,7 @@ public class OCRResultActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    ProgressDialogManager.destroyProgressDialog(pd);
                                     Toast.makeText(getApplicationContext(), "Data sent succesfully!", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -911,5 +926,4 @@ public class OCRResultActivity extends AppCompatActivity {
 
         return addressCity;
     }
-
 }
