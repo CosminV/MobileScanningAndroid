@@ -255,7 +255,7 @@ public class IDActivity extends Activity implements AppCompatCallback {
 
                                 Intent intent = new Intent(IDActivity.this, OCRResultActivity.class);
                                 intent.putExtra(BaseScanActivity.EXTRAS_RECOGNITION_RESULTS, recognitionResults);
-                                //intent.putExtra("BitmapString", bitmapString);
+                                intent.putExtra("BitmapString", bitmapString);
                                 startActivity(intent);
                                 //finish();
 

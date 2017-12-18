@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.HttpResponseCache;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Formatter;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -39,8 +42,11 @@ import com.microblink.recognizers.blinkid.romania.front.RomanianIDFrontSideRecog
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -75,6 +81,9 @@ public class OCRResultActivity extends AppCompatActivity {
     String ip = "192.168.175.44:83";
     String ip2 = "192.168.184.55:52600";
     String ipIdScanDemo = "192.168.175.200";
+    private static final String SOAP_ACTION = "http://tempuri.org/IServiceAgent/AgentScanResult";
+    private static final String NAMESPACE = "http://schemas.datacontract.org/2004/07/IDScan.Entities";
+    private static final String METHOD_NAME = "AgentScanData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +161,7 @@ public class OCRResultActivity extends AppCompatActivity {
                     Date issuingDate = result.getValidFrom();
                     Date birthDate = result.getDateOfBirth();
                     Date expiryDate = result.getValidUntil();
+                    String documentType = String.valueOf(result.getDocumentType());
                     Log.d("OUTPUT RO ID: ", name + surname + id + nationality + sex + address + issuedBy + birthPlace + issuingDate + birthDate + expiryDate);
 
                     Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -169,7 +179,7 @@ public class OCRResultActivity extends AppCompatActivity {
                     expiryDateTextView.setText(expiryDateString);
                     nationalityTextView.setText(nationality);
                     issuingDateTextView.setText(issuingDateString);
-                    issuedByTextView.setText(issuedBy);
+                    issuedByTextView.setText(documentType);
                     birthPlaceTextView.setText(birthPlace);
                     CNPTextView.setText(cnp);
                 }
@@ -188,6 +198,77 @@ public class OCRResultActivity extends AppCompatActivity {
                 scanAgainIntent.putExtra("BitmapStringFromResultActivity", bitmapString);
                 scanAgainIntent.putExtra("retryFlag", true);
                 startActivity(scanAgainIntent);
+            }
+        });
+    }
+
+    public void sendDataToIS(){
+        newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
+        newClientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            String URLIDScanDemo = "https://192.168.175.200/AgentService/IDScan.AgentService.ServiceAgent.svc";
+                            final String name = nameTextView.getText().toString();
+                            final String surname = surnameTextView.getText().toString();
+                            String id = idTextView.getText().toString();
+                            final String address = addressTextView.getText().toString();
+                            final String sex = sexTextView.getText().toString();
+                            final String birthDate = birthdayTextView.getText().toString();
+                            final String expiryDate = expiryDateTextView.getText().toString();
+                            final String nationality = nationalityTextView.getText().toString();
+                            final String issuingDate = issuingDateTextView.getText().toString();
+                            final String docType = issuedByTextView.getText().toString();
+                            final String birthPlace = birthPlaceTextView.getText().toString();
+                            final String cnp = CNPTextView.getText().toString();
+                            final String deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                            String bitmapString = getIntent().getStringExtra("BitmapString");
+                            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+                            @SuppressWarnings("deprecation")
+                            String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+
+                            SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME);
+                            soapObject.addProperty("HostName", URLIDScanDemo);
+                            soapObject.addProperty("DeviceID", deviceID);
+                            soapObject.addProperty("IPAddress", ipAddress);
+                            soapObject.addProperty("UserName", name);
+                            soapObject.addProperty("RequestReplyID", "DummyData");
+                            soapObject.addProperty("DocumentType", docType);
+                            soapObject.addProperty("DocumentSeries", id);
+                            soapObject.addProperty("DocumentClass", "CI");
+                            soapObject.addProperty("Picture_White", bitmapString);
+
+                            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                            envelope.setOutputSoapObject(soapObject);
+                            envelope.dotNet = true;
+
+                            HttpTransportSE httpTransportSE = new HttpTransportSE(URLIDScanDemo, 8000);
+                            try {
+                                httpTransportSE.call(SOAP_ACTION, envelope);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (XmlPullParserException e) {
+                                e.printStackTrace();
+                                Log.e("XMLLOG", e.getMessage());
+                            }
+
+                            Object result = null;
+                            try {
+                                result = envelope.getResponse();
+                                Log.i("RESPONSE-SOAP", String.valueOf(result));
+                            } catch (SoapFault soapFault) {
+                                soapFault.printStackTrace();
+                            }
+
+                        }
+                    });
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
+                }
             }
         });
     }
@@ -464,7 +545,7 @@ public class OCRResultActivity extends AppCompatActivity {
                                     connection.setRequestProperty("Content-Type", "application/json");
                                     connection.setConnectTimeout(8000);
 
-                                    String bitmapString = getIntent().getStringExtra("BitmapString");
+                                     String bitmapString = getIntent().getStringExtra("BitmapString");
 
                                     JSONObject jsonBodyPersonCard = postPersonCard(finalIDResponse, bitmapString);
 
