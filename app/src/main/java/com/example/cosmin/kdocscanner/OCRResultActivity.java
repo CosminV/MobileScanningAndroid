@@ -32,6 +32,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import com.microblink.activity.BaseScanActivity;
@@ -45,6 +46,7 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -203,12 +205,12 @@ public class OCRResultActivity extends AppCompatActivity {
         });
     }
 
-    public void sendDataToIS(){
+    public void sendDataToIS() {
         newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
         newClientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -232,6 +234,13 @@ public class OCRResultActivity extends AppCompatActivity {
                             @SuppressWarnings("deprecation")
                             String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pd = ProgressDialogManager.initiateProgressDialog("Sending client data...", OCRResultActivity.this);
+                                }
+                            });
+
                             SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME);
                             soapObject.addProperty("HostName", URLIDScanDemo);
                             soapObject.addProperty("DeviceID", deviceID);
@@ -250,337 +259,12 @@ public class OCRResultActivity extends AppCompatActivity {
                             HttpTransportSE httpTransportSE = new HttpTransportSE(URLIDScanDemo, 8000);
                             try {
                                 httpTransportSE.call(SOAP_ACTION, envelope);
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             } catch (XmlPullParserException e) {
                                 e.printStackTrace();
                                 Log.e("XMLLOG", e.getMessage());
-                            }
-
-                            Object result = null;
-                            try {
-                                result = envelope.getResponse();
-                                Log.i("RESPONSE-SOAP", String.valueOf(result));
-                            } catch (SoapFault soapFault) {
-                                soapFault.printStackTrace();
-                            }
-
-                        }
-                    });
-                } catch (Exception ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-        });
-    }
-
-    // metoda pentru transmiterea datelor unui client anterior OCR-izate catre baza de date.
-    public void sendDataToDB() {
-        newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
-        newClientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                try {
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Spinner ipSpinner = (Spinner) findViewById(R.id.spinner2);
-                                String ip = ipSpinner.getSelectedItem().toString();
-                                URL url = new URL("http://" + ip + "/api/Person");
-                                final String name = nameTextView.getText().toString();
-                                final String surname = surnameTextView.getText().toString();
-                                String id = idTextView.getText().toString();
-                                final String address = addressTextView.getText().toString();
-                                final String sex = sexTextView.getText().toString();
-                                final String birthDate = birthdayTextView.getText().toString();
-                                final String expiryDate = expiryDateTextView.getText().toString();
-                                final String nationality = nationalityTextView.getText().toString();
-                                final String issuingDate = issuingDateTextView.getText().toString();
-                                final String issuedBy = issuedByTextView.getText().toString();
-                                final String birthPlace = birthPlaceTextView.getText().toString();
-                                final String cnp = CNPTextView.getText().toString();
-                                int responseCodeAddressCity = 0;
-                                int responseCodePersonBirth = 0;
-                                int responseCodePersonID = 0;
-                                int responseCodePersonNationality = 0;
-                                int responseCodePersonPersonalIdentificationNumber = 0;
-                                int responseCodePersonSex = 0;
-                                int responseCodePersonCard = 0;
-                                String[] addressArray = address.split("\\n");
-                                String finalIDResponse = "";
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        pd = ProgressDialogManager.initiateProgressDialog("Sending client data...", OCRResultActivity.this);
-                                    }
-                                });
-                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                                connection.setRequestMethod("POST");
-                                connection.setRequestProperty("Content-Type", "application/json");
-                                connection.setConnectTimeout(8000);
-
-                                JSONObject jsonBodyName = new JSONObject();
-                                try {
-                                    jsonBodyName.put("IDType", 1);
-                                    jsonBodyName.put("FirstName", name);
-                                    jsonBodyName.put("MiddleName", null);
-                                    jsonBodyName.put("LastName", surname);
-                                } catch (JSONException ex) {
-                                    ex.printStackTrace();
-                                }
-                                final String requestBodyName = jsonBodyName.toString();
-                                Log.i("ADDRESS", address);
-                                Log.i("JSON", requestBodyName);
-                                connection.setDoOutput(true);
-                                connection.getOutputStream().write(requestBodyName.getBytes());
-
-                                // GET RETURNED ID
-
-                                if(connection.getResponseCode() == 201){
-
-                                    int value = 0;
-                                    do{
-                                        Log.i("Responsemessage" + value, connection.getHeaderField(value) + " " + connection.getHeaderFieldKey(value));
-                                        if(connection.getHeaderFieldKey(value).equals("PID")){
-                                            finalIDResponse = connection.getHeaderField(value);
-                                            Log.i("FINALIDFROMRESPONSE", finalIDResponse);
-                                            value = -2;
-                                        }
-                                        value++;
-                                    }while(connection.getHeaderFieldKey(value) != null && connection.getHeaderField(value) != null && value > 0);
-
-                                } else {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ProgressDialogManager.destroyProgressDialog(pd);
-                                                Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        System.out.println("Unable to POST");
-                                }
-
-                                connection.disconnect();
-
-                                // POST PersonAddressStreet
-
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setRequestMethod("POST");
-                                connection.setRequestProperty("Content-Type", "application/json");
-                                connection.setConnectTimeout(8000);
-
-                                setHttpConnection(url);
-
-                                JSONObject jsonBodyAddressStreet = postPersonAddressStreet(finalIDResponse, addressArray);
-
-                                final String requestBodyAddressStreet = jsonBodyAddressStreet.toString();
-                                Log.i("JSON", requestBodyAddressStreet);
-                                connection.setDoOutput(true);
-                                connection.getOutputStream().write(requestBodyAddressStreet.getBytes());
-
-                                int responseCodeAddressStreet = connection.getResponseCode();
-                                connection.disconnect();
-
-                                // POST PersonAddressCity
-                                if(responseCodeAddressStreet == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyAddressCity = postPersonAddressCity(finalIDResponse, addressArray);
-
-                                    final String requestBodyAddressCity = jsonBodyAddressCity.toString();
-                                    Log.i("JSON", requestBodyAddressCity);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyAddressCity.getBytes());
-                                    responseCodeAddressCity = connection.getResponseCode();
-                                    connection.disconnect();
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru AddressStreet");
-                                }
-                                // POST PersonBirth
-                                if(responseCodeAddressCity == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyPersonBirth = postPersonBirth(finalIDResponse, birthPlace, birthDate);
-
-                                    final String requestBodyPersonBirth = jsonBodyPersonBirth.toString();
-                                    Log.i("JSON", requestBodyPersonBirth);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonBirth.getBytes());
-                                    responseCodePersonBirth = connection.getResponseCode();
-                                    connection.disconnect();
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru AddressCity");
-                                }
-
-                                // POST PersonID
-                                if(responseCodePersonBirth == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyPersonID = postPersonID(finalIDResponse, id, issuingDate, expiryDate);
-
-                                    final String requestBodyPersonID = jsonBodyPersonID.toString();
-                                    Log.i("JSON", requestBodyPersonID);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonID.getBytes());
-                                    responseCodePersonID = connection.getResponseCode();
-                                    connection.disconnect();
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru PersonBirth");
-                                }
-
-
-                                // POST PersonNationality
-                                if(responseCodePersonID == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyPersonNationality = postPersonNationality(finalIDResponse, nationality);
-
-                                    final String requestBodyPersonNationality = jsonBodyPersonNationality.toString();
-                                    Log.i("JSON", requestBodyPersonNationality);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonNationality.getBytes());
-                                    responseCodePersonNationality = connection.getResponseCode();
-                                    connection.disconnect();
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru PersonID");
-                                }
-
-
-                                // POST PersonPersonalIdentificationNumber
-                                if(responseCodePersonNationality == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyPersonPersonalIdentificationNumber = postPersonPersonalIdentificationNumber(finalIDResponse, cnp);
-
-                                    final String requestBodyPersonalIdentificationNumber = jsonBodyPersonPersonalIdentificationNumber.toString();
-                                    Log.i("JSON", requestBodyPersonalIdentificationNumber);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonalIdentificationNumber.getBytes());
-                                    responseCodePersonPersonalIdentificationNumber = connection.getResponseCode();
-                                    connection.disconnect();
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru PersonNationality");
-                                }
-
-                                // POST PersonSex
-                                if(responseCodePersonPersonalIdentificationNumber == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                    JSONObject jsonBodyPersonSex = postPersonSex(finalIDResponse, sex);
-
-                                    final String requestBodyPersonSex = jsonBodyPersonSex.toString();
-                                    Log.i("JSON", requestBodyPersonSex);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonSex.getBytes());
-                                    responseCodePersonSex = connection.getResponseCode();
-                                    connection.disconnect();
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru PersonPersonalIdentificationNumber");
-                                }
-
-                                if(responseCodePersonSex == 201){
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setRequestMethod("POST");
-                                    connection.setRequestProperty("Content-Type", "application/json");
-                                    connection.setConnectTimeout(8000);
-
-                                     String bitmapString = getIntent().getStringExtra("BitmapString");
-
-                                    JSONObject jsonBodyPersonCard = postPersonCard(finalIDResponse, bitmapString);
-
-                                    final String requestBodyPersonCard = jsonBodyPersonCard.toString();
-                                    Log.i("JSON", requestBodyPersonCard);
-                                    connection.setDoOutput(true);
-                                    connection.getOutputStream().write(requestBodyPersonCard.getBytes());
-                                    responseCodePersonCard = connection.getResponseCode();
-                                    connection.disconnect();
-
-                                }else{
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ProgressDialogManager.destroyProgressDialog(pd);
-                                            Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    System.out.println("Eroare aparuta la ev. de POST pentru PersonSex");
-                                }
-                                HttpResponseCache responseCache = HttpResponseCache.install(getCacheDir(), 100000L);
-                                connection.disconnect();
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ProgressDialogManager.destroyProgressDialog(pd);
-                                        Toast.makeText(getApplicationContext(), "Data sent succesfully!", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                Log.i("ResponseCode", connection.getResponseCode() + "");
-
-                            } catch (MalformedURLException e) {
+                            } catch (HttpResponseException e) {
                                 e.printStackTrace();
-                            } catch (java.net.SocketTimeoutException e){
+                            } catch(SocketTimeoutException timeoutExcepetion){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -591,44 +275,388 @@ public class OCRResultActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "Data sent succesfully!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            Object result = null;
+                            try {
+                                result = envelope.getResponse();
+                                Log.i("RESPONSE-SOAP", String.valueOf(result));
+                            } catch (SoapFault soapFault) {
+                                soapFault.printStackTrace();
+                            }
                         }
                     });
+
                 } catch (Exception ex) {
-                        System.out.println(ex.toString());
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+            // metoda pentru transmiterea datelor unui client anterior OCR-izate catre baza de date.
+            public void sendDataToDB() {
+                newClientButton = (ImageButton) findViewById(R.id.newClientBtn);
+                newClientButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        try {
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Spinner ipSpinner = (Spinner) findViewById(R.id.spinner2);
+                                        String ip = ipSpinner.getSelectedItem().toString();
+                                        URL url = new URL("http://" + ip + "/api/Person");
+                                        final String name = nameTextView.getText().toString();
+                                        final String surname = surnameTextView.getText().toString();
+                                        String id = idTextView.getText().toString();
+                                        final String address = addressTextView.getText().toString();
+                                        final String sex = sexTextView.getText().toString();
+                                        final String birthDate = birthdayTextView.getText().toString();
+                                        final String expiryDate = expiryDateTextView.getText().toString();
+                                        final String nationality = nationalityTextView.getText().toString();
+                                        final String issuingDate = issuingDateTextView.getText().toString();
+                                        final String issuedBy = issuedByTextView.getText().toString();
+                                        final String birthPlace = birthPlaceTextView.getText().toString();
+                                        final String cnp = CNPTextView.getText().toString();
+                                        int responseCodeAddressCity = 0;
+                                        int responseCodePersonBirth = 0;
+                                        int responseCodePersonID = 0;
+                                        int responseCodePersonNationality = 0;
+                                        int responseCodePersonPersonalIdentificationNumber = 0;
+                                        int responseCodePersonSex = 0;
+                                        int responseCodePersonCard = 0;
+                                        String[] addressArray = address.split("\\n");
+                                        String finalIDResponse = "";
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                pd = ProgressDialogManager.initiateProgressDialog("Sending client data...", OCRResultActivity.this);
+                                            }
+                                        });
+                                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                        connection.setRequestMethod("POST");
+                                        connection.setRequestProperty("Content-Type", "application/json");
+                                        connection.setConnectTimeout(8000);
+
+                                        JSONObject jsonBodyName = new JSONObject();
+                                        try {
+                                            jsonBodyName.put("IDType", 1);
+                                            jsonBodyName.put("FirstName", name);
+                                            jsonBodyName.put("MiddleName", null);
+                                            jsonBodyName.put("LastName", surname);
+                                        } catch (JSONException ex) {
+                                            ex.printStackTrace();
+                                        }
+                                        final String requestBodyName = jsonBodyName.toString();
+                                        Log.i("ADDRESS", address);
+                                        Log.i("JSON", requestBodyName);
+                                        connection.setDoOutput(true);
+                                        connection.getOutputStream().write(requestBodyName.getBytes());
+
+                                        // GET RETURNED ID
+
+                                        if (connection.getResponseCode() == 201) {
+
+                                            int value = 0;
+                                            do {
+                                                Log.i("Responsemessage" + value, connection.getHeaderField(value) + " " + connection.getHeaderFieldKey(value));
+                                                if (connection.getHeaderFieldKey(value).equals("PID")) {
+                                                    finalIDResponse = connection.getHeaderField(value);
+                                                    Log.i("FINALIDFROMRESPONSE", finalIDResponse);
+                                                    value = -2;
+                                                }
+                                                value++;
+                                            }
+                                            while (connection.getHeaderFieldKey(value) != null && connection.getHeaderField(value) != null && value > 0);
+
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Unable to POST");
+                                        }
+
+                                        connection.disconnect();
+
+                                        // POST PersonAddressStreet
+
+                                        connection = (HttpURLConnection) url.openConnection();
+                                        connection.setRequestMethod("POST");
+                                        connection.setRequestProperty("Content-Type", "application/json");
+                                        connection.setConnectTimeout(8000);
+
+                                        setHttpConnection(url);
+
+                                        JSONObject jsonBodyAddressStreet = postPersonAddressStreet(finalIDResponse, addressArray);
+
+                                        final String requestBodyAddressStreet = jsonBodyAddressStreet.toString();
+                                        Log.i("JSON", requestBodyAddressStreet);
+                                        connection.setDoOutput(true);
+                                        connection.getOutputStream().write(requestBodyAddressStreet.getBytes());
+
+                                        int responseCodeAddressStreet = connection.getResponseCode();
+                                        connection.disconnect();
+
+                                        // POST PersonAddressCity
+                                        if (responseCodeAddressStreet == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyAddressCity = postPersonAddressCity(finalIDResponse, addressArray);
+
+                                            final String requestBodyAddressCity = jsonBodyAddressCity.toString();
+                                            Log.i("JSON", requestBodyAddressCity);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyAddressCity.getBytes());
+                                            responseCodeAddressCity = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru AddressStreet");
+                                        }
+                                        // POST PersonBirth
+                                        if (responseCodeAddressCity == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyPersonBirth = postPersonBirth(finalIDResponse, birthPlace, birthDate);
+
+                                            final String requestBodyPersonBirth = jsonBodyPersonBirth.toString();
+                                            Log.i("JSON", requestBodyPersonBirth);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonBirth.getBytes());
+                                            responseCodePersonBirth = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru AddressCity");
+                                        }
+
+                                        // POST PersonID
+                                        if (responseCodePersonBirth == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyPersonID = postPersonID(finalIDResponse, id, issuingDate, expiryDate);
+
+                                            final String requestBodyPersonID = jsonBodyPersonID.toString();
+                                            Log.i("JSON", requestBodyPersonID);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonID.getBytes());
+                                            responseCodePersonID = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru PersonBirth");
+                                        }
+
+
+                                        // POST PersonNationality
+                                        if (responseCodePersonID == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyPersonNationality = postPersonNationality(finalIDResponse, nationality);
+
+                                            final String requestBodyPersonNationality = jsonBodyPersonNationality.toString();
+                                            Log.i("JSON", requestBodyPersonNationality);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonNationality.getBytes());
+                                            responseCodePersonNationality = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru PersonID");
+                                        }
+
+
+                                        // POST PersonPersonalIdentificationNumber
+                                        if (responseCodePersonNationality == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyPersonPersonalIdentificationNumber = postPersonPersonalIdentificationNumber(finalIDResponse, cnp);
+
+                                            final String requestBodyPersonalIdentificationNumber = jsonBodyPersonPersonalIdentificationNumber.toString();
+                                            Log.i("JSON", requestBodyPersonalIdentificationNumber);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonalIdentificationNumber.getBytes());
+                                            responseCodePersonPersonalIdentificationNumber = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru PersonNationality");
+                                        }
+
+                                        // POST PersonSex
+                                        if (responseCodePersonPersonalIdentificationNumber == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            JSONObject jsonBodyPersonSex = postPersonSex(finalIDResponse, sex);
+
+                                            final String requestBodyPersonSex = jsonBodyPersonSex.toString();
+                                            Log.i("JSON", requestBodyPersonSex);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonSex.getBytes());
+                                            responseCodePersonSex = connection.getResponseCode();
+                                            connection.disconnect();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru PersonPersonalIdentificationNumber");
+                                        }
+
+                                        if (responseCodePersonSex == 201) {
+                                            connection = (HttpURLConnection) url.openConnection();
+                                            connection.setRequestMethod("POST");
+                                            connection.setRequestProperty("Content-Type", "application/json");
+                                            connection.setConnectTimeout(8000);
+
+                                            String bitmapString = getIntent().getStringExtra("BitmapString");
+
+                                            JSONObject jsonBodyPersonCard = postPersonCard(finalIDResponse, bitmapString);
+
+                                            final String requestBodyPersonCard = jsonBodyPersonCard.toString();
+                                            Log.i("JSON", requestBodyPersonCard);
+                                            connection.setDoOutput(true);
+                                            connection.getOutputStream().write(requestBodyPersonCard.getBytes());
+                                            responseCodePersonCard = connection.getResponseCode();
+                                            connection.disconnect();
+
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ProgressDialogManager.destroyProgressDialog(pd);
+                                                    Toast.makeText(getApplicationContext(), "Unable to send client data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            System.out.println("Eroare aparuta la ev. de POST pentru PersonSex");
+                                        }
+                                        HttpResponseCache responseCache = HttpResponseCache.install(getCacheDir(), 100000L);
+                                        connection.disconnect();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ProgressDialogManager.destroyProgressDialog(pd);
+                                                Toast.makeText(getApplicationContext(), "Data sent succesfully!", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                        Log.i("ResponseCode", connection.getResponseCode() + "");
+
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    } catch (java.net.SocketTimeoutException e) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ProgressDialogManager.destroyProgressDialog(pd);
+                                                Toast.makeText(getApplicationContext(), "Couldn't establish a connection to the server. Try again.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        } catch (Exception ex) {
+                            System.out.println(ex.toString());
+                        }
                     }
+                });
             }
-        });
-    }
 
-    public void createDocumentIndirect(){
-        createButton = (ImageButton) findViewById(R.id.createBtn);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String name = nameTextView.getText().toString();
-                final String surname = surnameTextView.getText().toString();
-                String id = idTextView.getText().toString();
-                final String address = addressTextView.getText().toString();
-                final String birthDate = birthdayTextView.getText().toString();
-                final String nationality = nationalityTextView.getText().toString();
-                final String issuingDate = issuingDateTextView.getText().toString();
-                final String issuedBy = issuedByTextView.getText().toString();
-                final String cnp = CNPTextView.getText().toString();
+            public void createDocumentIndirect() {
+                createButton = (ImageButton) findViewById(R.id.createBtn);
+                createButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String name = nameTextView.getText().toString();
+                        final String surname = surnameTextView.getText().toString();
+                        String id = idTextView.getText().toString();
+                        final String address = addressTextView.getText().toString();
+                        final String birthDate = birthdayTextView.getText().toString();
+                        final String nationality = nationalityTextView.getText().toString();
+                        final String issuingDate = issuingDateTextView.getText().toString();
+                        final String issuedBy = issuedByTextView.getText().toString();
+                        final String cnp = CNPTextView.getText().toString();
 
-                Intent docActivityIntent = new Intent(OCRResultActivity.this, DocumentActivity.class);
-                docActivityIntent.putExtra("name", name);
-                docActivityIntent.putExtra("surname", surname);
-                docActivityIntent.putExtra("id", id);
-                docActivityIntent.putExtra("address", address);
-                docActivityIntent.putExtra("nationality", nationality);
-                docActivityIntent.putExtra("birthdate", birthDate);
-                docActivityIntent.putExtra("issuingdate", issuingDate);
-                docActivityIntent.putExtra("issuedby", issuedBy);
-                docActivityIntent.putExtra("cnp", cnp);
-                startActivity(docActivityIntent);
+                        Intent docActivityIntent = new Intent(OCRResultActivity.this, DocumentActivity.class);
+                        docActivityIntent.putExtra("name", name);
+                        docActivityIntent.putExtra("surname", surname);
+                        docActivityIntent.putExtra("id", id);
+                        docActivityIntent.putExtra("address", address);
+                        docActivityIntent.putExtra("nationality", nationality);
+                        docActivityIntent.putExtra("birthdate", birthDate);
+                        docActivityIntent.putExtra("issuingdate", issuingDate);
+                        docActivityIntent.putExtra("issuedby", issuedBy);
+                        docActivityIntent.putExtra("cnp", cnp);
+                        startActivity(docActivityIntent);
+                    }
+                });
             }
-        });
-    }
 
     public void createDocumentDirect(){
         createButton = (ImageButton) findViewById(R.id.createBtn);
